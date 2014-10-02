@@ -5,31 +5,45 @@ function splitRepoURLIntoUserAndID(url) {
 	url = url.split('/');
 
 	return {
-		"id": url[url.length()-1],
-		"user": url[url.length()-2]
+		"id": url[url.length-1],
+		"user": url[url.length-2]
 	};
 
 }
 
-function getRepoWithIDByUser(id, user) {
+// Maybe not needed. Hm.
+function getRepoOwnerWithIDByUser(id, user) {
 
 	var apiEndpath = '/repos/' + user + '/' + id;
 
 	$.ajax(apiBasepath + apiEndpath)
-	.done(function() {
+	.done(function(data) {
     
-    	alert( "success" );
+    	console.log(data['owner']['login']);
 	
 	})
 	.fail(function() {
     
     	alert( "error" );
 	
-	})
-	.always(function() {
-    
-    	alert( "complete" );
-	
 	});
+
+}
+
+function getRepoStatsWithOwnerAndID(owner, id) {
+	
+	var apiEndpath = '/repos/' + owner + '/' + id + '/stats/contributors';
+
+	$.ajax(apiBasepath + apiEndpath)
+	.done(function(data) {
+    
+    	console.log(data);
+	
+	})
+	.fail(function() {
+    
+    	alert( "error" );
+	
+	});	
 
 }
