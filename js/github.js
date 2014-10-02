@@ -1,6 +1,6 @@
 var apiBasepath = 'https://api.github.com';
 
-function splitRepoURLIntoUserAndID(url) {
+function getUserAndIdFromRepoURL(url) {
 
 	url = url.split('/');
 
@@ -12,14 +12,14 @@ function splitRepoURLIntoUserAndID(url) {
 }
 
 // Maybe not needed. Hm.
-function getRepoOwnerWithIDByUser(id, user) {
+function getRepoOwnerWithIdByUser(id, user) {
 
 	var apiEndpath = '/repos/' + user + '/' + id;
 
 	$.ajax(apiBasepath + apiEndpath)
 	.done(function(data) {
     
-    	console.log(data['owner']['login']);
+    	return(data['owner']['login']);
 	
 	})
 	.fail(function() {
@@ -30,14 +30,14 @@ function getRepoOwnerWithIDByUser(id, user) {
 
 }
 
-function getRepoStatsWithOwnerAndID(owner, id) {
+function getRepoStatsWithOwnerAndId(owner, id) {
 	
 	var apiEndpath = '/repos/' + owner + '/' + id + '/stats/contributors';
 
 	$.ajax(apiBasepath + apiEndpath)
 	.done(function(data) {
     
-    	console.log(data);
+		return ;
 	
 	})
 	.fail(function() {
