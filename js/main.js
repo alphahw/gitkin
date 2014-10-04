@@ -27,7 +27,7 @@ var radiansPerDegree = Math.PI / 180; // Calculate radians per degree for less p
 
 var towerBlockHeight = 10; // Default preset for how high tower building blocks (aka cylinders) should be
 
-var radiusSegments = 36; // Default preset for how round tower building blocks (aka cylinders) should be
+var radiusSegments = 6; // Default preset for how round tower building blocks (aka cylinders) should be
 
 // Three.js requisites
 var scene, camera, renderer;
@@ -43,16 +43,19 @@ function buildingTowers(stats) {
 	// Set the scene
 
 	scene = new THREE.Scene();
-	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
 
-	renderer = new THREE.WebGLRenderer({alpha: true});
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer = new THREE.WebGLRenderer({alpha: false});
+	renderer.setSize(window.innerWidth, window.innerHeight);
 
 		// Add a plane to put the towers on
 
 	$('body').append(renderer.domElement);
 
 	plane = new THREE.Mesh(new THREE.PlaneGeometry(2500, 2500), new THREE.MeshBasicMaterial({color: 0xf0f0f0}));
+
+	plane.translateY = towerBlockHeight; // Move it down so we get to use the origin to stack tower blocks from
+
 	scene.add(plane);
 
 	// And now… actual tower construction time!
@@ -67,29 +70,59 @@ function buildingTowers(stats) {
 
 	while (authorCounter < stats.length) {
 
-		// A new group per tower, added to the main repo group
+		// Reference to the current author's data
+
+		var author = stats[authorCounter];
+
+		// A new tower per author, later added to the main repo group
 
 		var tower = new THREE.Object3D;
 
 		// Loop through all weeks this author has been a contributor to the repo, adding a building block if they've been active that week
-		
 
-		// Tower block			
+		var weekCounter = 0;
 
-		var geometry = new THREE.CylinderGeometry(5, 5, 5, radiusSegments);
-		var material = new THREE.MeshLambertMaterial( { color: 0xf0f0f0 } );
-		cylinder = new THREE.Mesh( geometry, material );
+		while (weekCounter < author['weeks'].length) {
 
-		cylinder.rotation.x = 90*radiansPerDegree;
+			// Reference to the current week's data
 
-	authorCounter++;
+			var week = author['weeks'][weekCounter];
+
+			// Check if there's been any activity this week – if not, move on to the next week
+
+			if (week['c'] === 0) {
+				continue;
+			};
+
+			// Construct a tower block			
+
+			var geometry = new THREE.CylinderGeometry(5, 5, towerBlockHeight, radiusSegments);
+			var material = new THREE.MeshLambertMaterial({color: 0xf0f0f0});
+			var towerBlock = new THREE.Mesh(geometry, material);
+
+			// Place it at the right height
+
+			towerBlock.translateY(towerBlockHeight * weekCounter);
+
+			// Make it face upwards
+
+			towerBlock.rotation.x = 90*radiansPerDegree;
+
+			tower.add(towerBlock);
+
+			weekCounter++;
+
+		}
+
+		repoGroup.add(tower);
+
+		authorCounter++;
 
 	}
 
 	// Add repo master group to the scene
 
 	scene.add(repoGroup);
-
 
 	// create a point light
 	var pointLight =
@@ -105,7 +138,7 @@ function buildingTowers(stats) {
 
 	camera.position.z = 50;
 	camera.position.y = -75;
-	camera.lookAt(cylinder.position);
+	camera.lookAt(repoGroup.position);
 
 	render();
 
