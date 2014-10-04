@@ -4,9 +4,17 @@ function getUserAndIdFromRepoURL(url) {
 
 	url = url.split('/');
 
-	return {
-		"id": url[url.length-1],
-		"user": url[url.length-2]
+	if (url[2] === 'github.com') {
+
+		return {
+			"id": url[4],
+			"user": url[3]
+		};
+
+	} else {
+
+		return {"error" : "That's not a GitHub URL… :("}
+
 	};
 
 }
@@ -37,7 +45,7 @@ function getRepoStatsWithOwnerAndId(owner, id) {
 	$.ajax(apiBasepath + apiEndpath)
 	.done(function(data) {
     
-		return ;
+		return data;
 	
 	})
 	.fail(function() {

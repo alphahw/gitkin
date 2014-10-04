@@ -24,10 +24,15 @@
         
         <section class="intro">
             
-            <p>Visualize your GitHub repo as towers built up of cylinders, one tower for each contributor. Throw in a repository URL below and <b>hit enter ⏎</b> to see it for yourself!</p>
+            <p>Visualize any public GitHub repo as a number of towers built up of cylinders – one cylinder per week of commits, one tower for each contributor. Throw in a repository URL below and <b>hit enter ⏎</b> to see for yourself.</p>
 
-            <form action=""><input type="text" name="repo" class="pandorasBox" placeholder="https://github.com/octocat/Spoon-Knife" tabindex="1" autofocus></form>
+            <form action="" class="pandorasBox" onsubmit="return magic()">
+                <input type="text" name="repo" placeholder="https://github.com/octocat/Spoon-Knife" tabindex="1" autofocus>
+            </form>
 
         </section>
+        <footer>
+            <p>Evening hack by <a href="http://alphahw.eu/">@alphahw</a>. Have a fantastic day!</p>
+        </footer>
     </body>
 </html>
