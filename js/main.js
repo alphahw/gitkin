@@ -29,6 +29,8 @@ var towerBlockHeight = 10; // Default preset for how high tower building blocks 
 
 var radiusSegments = 6; // Default preset for how round tower building blocks (aka cylinders) should be
 
+var towerBlockMaterial = new THREE.MeshLambertMaterial({color: 0xf0f0f0}); // Material for the tower blocks
+
 // Three.js requisites
 var scene, camera, renderer;
 
@@ -45,7 +47,7 @@ function buildingTowers(stats) {
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
 
-	renderer = new THREE.WebGLRenderer({alpha: false});
+	renderer = new THREE.WebGLRenderer({alpha: true});
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
 		// Add a plane to put the towers on
@@ -54,7 +56,7 @@ function buildingTowers(stats) {
 
 	plane = new THREE.Mesh(new THREE.PlaneGeometry(2500, 2500), new THREE.MeshBasicMaterial({color: 0xf0f0f0}));
 
-	plane.translateY = towerBlockHeight; // Move it down so we get to use the origin to stack tower blocks from
+	plane.position.y = towerBlockHeight; // Move it down so we get to use the origin to stack tower blocks from
 
 	scene.add(plane);
 
@@ -63,6 +65,8 @@ function buildingTowers(stats) {
 	// Set up a repo master group to host all our towers
 
 	var repoGroup = new THREE.Object3D;
+
+	scene.add(repoGroup);
 
 	// Looping through every authors' stats in what GitHub has returned for the repo
 
@@ -97,12 +101,12 @@ function buildingTowers(stats) {
 			// Construct a tower block			
 
 			var geometry = new THREE.CylinderGeometry(5, 5, towerBlockHeight, radiusSegments);
-			var material = new THREE.MeshLambertMaterial({color: 0xf0f0f0});
-			var towerBlock = new THREE.Mesh(geometry, material);
+			
+			var towerBlock = new THREE.Mesh(geometry, towerBlockMaterial);
 
 			// Place it at the right height
 
-			towerBlock.translateY(towerBlockHeight * weekCounter);
+			towerBlock.position.y = -(towerBlockHeight * weekCounter);
 
 			// Make it face upwards
 
@@ -114,15 +118,15 @@ function buildingTowers(stats) {
 
 		}
 
+		// Move tower sideways
+
+		tower.position.z = (authorCounter * towerBlockHeight);
+
 		repoGroup.add(tower);
 
 		authorCounter++;
 
 	}
-
-	// Add repo master group to the scene
-
-	scene.add(repoGroup);
 
 	// create a point light
 	var pointLight =
