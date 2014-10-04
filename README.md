@@ -2,11 +2,13 @@
 
 That's all there is to it, really. You punch in a GitHub repo URL and get a snazzy visual consisting of towers for each contributor to the repo; with building blocks sized according to that week's activity.
 
+[Give it a try.](http://alphahw.github.io/gitkin/)
+
 ##Why?
 
 Bars and contributor graphs are cool, but 3D is cooler, ain't it?
 
-##gitkin? What kind of name is that?
+##gitkin? What kind of a name is that?
 
 I had a hard time coming up with the name. I thought of towers since that's what gitkin gives you, and since I'm currently in London, UK, my eyes fell quite naturally on [30 St Mary Axe](https://www.google.co.uk/maps/place/30+St+Mary+Axe+(The+Gherkin)/@51.514492,-0.080306,17z) – also known as [**The Gherkin**](http://en.wikipedia.org/wiki/30_St_Mary_Axe).
 
