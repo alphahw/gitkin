@@ -27,7 +27,7 @@ var radiansPerDegree = Math.PI / 180; // Calculate radians per degree for less p
 
 var towerBlockHeight = 10; // Default preset for how high tower building blocks (aka cylinders) should be
 
-var radiusSegments = 6; // Default preset for how round tower building blocks (aka cylinders) should be
+var radiusSegments = 36; // Default preset for how round tower building blocks (aka cylinders) should be
 
 var towerBlockMaterial = new THREE.MeshLambertMaterial({color: 0xf0f0f0}); // Material for the tower blocks
 
@@ -57,6 +57,8 @@ function buildingTowers(stats) {
 	plane = new THREE.Mesh(new THREE.PlaneGeometry(2500, 2500), new THREE.MeshBasicMaterial({color: 0xf0f0f0}));
 
 	plane.position.y = towerBlockHeight; // Move it down so we get to use the origin to stack tower blocks from
+
+	plane.rotation.x = 45*radiansPerDegree;
 
 	scene.add(plane);
 
@@ -143,6 +145,10 @@ function buildingTowers(stats) {
 	camera.position.z = 50;
 	camera.position.y = -75;
 	camera.lookAt(repoGroup.position);
+
+	$(renderer.domElement).fadeIn();
+
+	$(".back").fadeIn();
 
 	render();
 

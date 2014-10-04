@@ -74,7 +74,17 @@ canvas {
     position: absolute;
     top: 0;
     right: 0;
-    z-index: -1;
+}
+
+.back {
+    position: absolute;
+    z-index: 99;
+    top: 1.25%;
+    left: 1.25%;
+    padding: 1.25%;
+    text-decoration: none;
+    color: #0f0f0f;
+    display: none;
 }
 
 h1 {
