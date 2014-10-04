@@ -146,6 +146,8 @@ function buildingTowers(stats) {
 	camera.position.y = -75;
 	camera.lookAt(repoGroup.position);
 
+	$(".forkIt").fadeOut();
+
 	$(renderer.domElement).fadeIn();
 
 	$(".back").fadeIn();

@@ -87,6 +87,13 @@ canvas {
     display: none;
 }
 
+.forkIt {
+    position: absolute;
+    z-index: 99;
+    top: 0;
+    right: 0;
+}
+
 h1 {
     font-family: "Helvetica Neue", sans-serif;
     font-size: 400%;
