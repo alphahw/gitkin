@@ -45,7 +45,7 @@ function getRepoStatsWithOwnerAndId(owner, id) {
 	$.ajax(apiBasepath + apiEndpath)
 	.done(function(data) {
     
-		return data;
+		buildingTowers(data);
 	
 	})
 	.fail(function() {

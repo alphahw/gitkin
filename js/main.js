@@ -8,11 +8,7 @@ function magic() {
 
 	if (!repoDetails['error']) {
 
-		stats = getRepoStatsWithOwnerAndId(repoDetails['user'], repoDetails['id']);
-
-		console.log(stats);
-
-		buildingTowers();
+		getRepoStatsWithOwnerAndId(repoDetails['user'], repoDetails['id']);
 
 	} else {
 
@@ -26,61 +22,97 @@ function magic() {
 
 // Three.js making WebGL a walk in the park
 
-var scene;
-var camera;
-var renderer;
-var cylinder;
+// "Constants"/helpers/presets
+var radiansPerDegree = Math.PI / 180; // Calculate radians per degree for less painful rotation et al
 
-function buildingTowers() {
+var towerBlockHeight = 10; // Default preset for how high tower building blocks (aka cylinders) should be
 
-if ($('body canvas').length > 0) {
-	return;
-};
+var radiusSegments = 36; // Default preset for how round tower building blocks (aka cylinders) should be
 
-scene = new THREE.Scene();
-camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+// Three.js requisites
+var scene, camera, renderer;
 
-renderer = new THREE.WebGLRenderer({alpha: true});
-renderer.setSize( window.innerWidth, window.innerHeight );
+function buildingTowers(stats) {
 
-$('body').append(renderer.domElement);
+	// Return false if we're already showing a visualisation (probably not needed later on when we get rid of showing the input after visualizing)
 
-var geometry = new THREE.CylinderGeometry(5,5,5);
-var material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
-cylinder = new THREE.Mesh( geometry, material );
-scene.add( cylinder );
+	if ($('body canvas').length > 0) {
+		return;
+	};
 
-cylinder.rotation.x = 1.57079633;
-cylinder.position.z = 10;
+	// Set the scene
 
-plane = new THREE.Mesh(new THREE.PlaneGeometry(250, 250), new THREE.MeshLambertMaterial({color: 0xFFFFFF}));
-scene.add(plane);
+	scene = new THREE.Scene();
+	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-// create a point light
-var pointLight =
-  new THREE.PointLight(0xFFFFFF);
+	renderer = new THREE.WebGLRenderer({alpha: true});
+	renderer.setSize( window.innerWidth, window.innerHeight );
 
-// set its position
-pointLight.position.x = 10;
-pointLight.position.y = 50;
-pointLight.position.z = 130;
+		// Add a plane to put the towers on
 
-// add to the scene
-scene.add(pointLight);
+	$('body').append(renderer.domElement);
 
-camera.position.z = 50;
-camera.position.y = -75;
-camera.lookAt(cylinder.position);
+	plane = new THREE.Mesh(new THREE.PlaneGeometry(2500, 2500), new THREE.MeshBasicMaterial({color: 0xf0f0f0}));
+	scene.add(plane);
 
-render();
+	// And now… actual tower construction time!
+
+	// Set up a repo master group to host all our towers
+
+	var repoGroup = new THREE.Object3D;
+
+	// Looping through every authors' stats in what GitHub has returned for the repo
+
+	var authorCounter = 0;
+
+	while (authorCounter < stats.length) {
+
+		// A new group per tower, added to the main repo group
+
+		var tower = new THREE.Object3D;
+
+		// Loop through all weeks this author has been a contributor to the repo, adding a building block if they've been active that week
+		
+
+		// Tower block			
+
+		var geometry = new THREE.CylinderGeometry(5, 5, 5, radiusSegments);
+		var material = new THREE.MeshLambertMaterial( { color: 0xf0f0f0 } );
+		cylinder = new THREE.Mesh( geometry, material );
+
+		cylinder.rotation.x = 90*radiansPerDegree;
+
+	authorCounter++;
+
+	}
+
+	// Add repo master group to the scene
+
+	scene.add(repoGroup);
+
+
+	// create a point light
+	var pointLight =
+	  new THREE.PointLight(0xFFFFFF);
+
+	// set its position
+	pointLight.position.x = 50;
+	pointLight.position.y = -50;
+	pointLight.position.z = 100;
+
+	// add to the scene
+	scene.add(pointLight);
+
+	camera.position.z = 50;
+	camera.position.y = -75;
+	camera.lookAt(cylinder.position);
+
+	render();
 
 }
 
 function render() {
 	requestAnimationFrame(render);
-
-	/*cylinder.rotation.y += 0.005;
-	cylinder.rotation.z += 0.05;*/
 
 	renderer.render(scene, camera);
 }
