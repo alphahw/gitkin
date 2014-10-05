@@ -108,7 +108,7 @@ function buildingTowers(stats) {
 
 			// Place it at the right height
 
-			towerBlock.position.x = -(towerBlockHeight * weekCounter);
+			towerBlock.position.z = -(towerBlockHeight * weekCounter);
 
 			// Make it face upwards
 
