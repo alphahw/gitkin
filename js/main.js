@@ -102,7 +102,7 @@ function buildingTowers(stats) {
 
 			// Construct a tower block			
 
-			var geometry = new THREE.CylinderGeometry(5, 5, towerBlockHeight, radiusSegments);
+			var geometry = new THREE.CylinderGeometry(Math.round(week['c']*0.5), Math.round(week['c']*0.5), towerBlockHeight, radiusSegments);
 			
 			var towerBlock = new THREE.Mesh(geometry, towerBlockMaterial);
 
